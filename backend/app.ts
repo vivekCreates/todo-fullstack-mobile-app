@@ -14,10 +14,4 @@ app.use(cors({
 }))
 
 
-connectToMongoDB(process.env.MONGO_URL!).then(()=>{
-    app.listen(PORT,()=>{
-        console.log(`Server is running on http://localhost:${PORT}`);
-    })
-}).catch((error)=>{
-    console.error("Failed to connect to MongoDB. Server not started.",error);
-});
+export default app;

@@ -3,13 +3,14 @@ import { User } from "../models/user.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+export const JWT_SECRET = process.env.JWT_SECRET!;
 
 
 async function registerUser(req: Request, res: Response) {
     try {
         const { username, email, password } = req.body;
 
-        if ([username, email, password].find((field => field?.toLowerCase().trim() === ""))) {
+        if ([username, email, password].some((field => field?.toLowerCase().trim() === ""))) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -34,7 +35,7 @@ async function registerUser(req: Request, res: Response) {
 async function loginUser(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
-        if ([email, password].find((field => field?.toLowerCase().trim() === ""))) {
+        if ([email, password].some((field => field?.toLowerCase().trim() === ""))) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -48,8 +49,8 @@ async function loginUser(req: Request, res: Response) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
         const token = jwt.sign(
-            { id: existedUser.id, email: existedUser.email },
-            process.env.JWT_SECRET,
+            { id:existedUser._id.toString(), email: existedUser.email },
+            JWT_SECRET,
             { expiresIn: "7d" }
         );
         return res.status(200).json({ message: "Login successful", user: existedUser, token });
