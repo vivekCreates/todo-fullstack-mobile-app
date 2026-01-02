@@ -1,11 +1,21 @@
 import mongoose from "mongoose";
 
+export interface ITodo {
+    title:string;
+    description:string;
+    isCompleted?:boolean;
+    userId:mongoose.Schema.Types.ObjectId;
+}
 
 
 const todoSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true,
+    },
+    description:{
+        type:String,
+        required:true
     },
     isCompleted:{
         type:Boolean,
