@@ -1,10 +1,14 @@
 import {Router} from "express"
+import { createTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todo.controller";
+import { authMiddleware } from "../middlewares/auth.niddleware";
 
 const router = Router();
 
-router.route("todos").get();
-router.route("todos/create").post();
-router.route("todos/update/:id").post();
-router.route("todos/delete/:id").post();
+router.use(authMiddleware);
+
+router.route("todos").get(getTodos);
+router.route("todos/create").post(createTodo);
+router.route("todos/update/:id").post(updateTodo);
+router.route("todos/delete/:id").post(deleteTodo);
 
 export default router;
