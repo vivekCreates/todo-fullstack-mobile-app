@@ -1,0 +1,12 @@
+# backend
+backend/node_modules
+backend/dist
+backend/.env
+
+# mobile (Expo)
+mobile/node_modules
+mobile/.expo
+mobile/dist
+
+# common
+.env
