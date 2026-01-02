@@ -6,9 +6,9 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.route("todos").get(getTodos);
-router.route("todos/create").post(createTodo);
-router.route("todos/update/:id").post(updateTodo);
-router.route("todos/delete/:id").post(deleteTodo);
+router.route("/").get(getTodos);
+router.route("/create").post(createTodo);
+router.route("/update/:id").post(updateTodo);
+router.route("/delete/:id").post(deleteTodo);
 
 export default router;
