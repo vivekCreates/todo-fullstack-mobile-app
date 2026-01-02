@@ -5,7 +5,7 @@ import { ITodo, Todo } from "../models/todo.model";
 
 export async function createTodo(req:Request,res:Response) {
   try {
-    const {title,description} = req.body as ITodo
+    const {title,description} = req.body
 
     if(!title || !description){
       return res.status(400).json({message:"Title and Description are required"});
@@ -14,7 +14,7 @@ export async function createTodo(req:Request,res:Response) {
     const newTodo = await Todo.create({
       title,
       description,
-      userId: req.user!.id
+      userId: req.user?.id
     });
     return  res.status(201).json({
       message:"Todo created successfully",  
@@ -27,10 +27,10 @@ export async function createTodo(req:Request,res:Response) {
 
 export async function updateTodo(req:Request,res:Response) {
   try {
-    const {title,description} = req.body as ITodo
+    const {title,description} = req.body 
     const {id} = req.params;
 
-    if(!title || !description){
+    if(!title && !description){
       return res.status(400).json({message:"Title and Description are required"});
     }
 

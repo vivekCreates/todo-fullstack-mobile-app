@@ -14,6 +14,12 @@ export async function registerUser(req: Request, res: Response) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    const alreadyExists = await User.findOne({ email});
+
+    if (alreadyExists) {
+      return res.status(409).json({ message: "User with this email already exists" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -57,10 +63,10 @@ export async function loginUser(req: Request, res: Response) {
     }
 
     const token = jwt.sign(
-      { userId: user._id.toString() },
+      { id: user._id.toString(),email: user.email },
       JWT_SECRET,
       { expiresIn: "7d" }
-    );
+    ) ;
 
     return res.status(200).json({
       message: "Login successful",

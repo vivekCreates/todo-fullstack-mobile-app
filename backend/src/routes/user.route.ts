@@ -1,4 +1,4 @@
-import { authMiddleware } from './../middlewares/auth.niddleware';
+import { authMiddleware } from '../middlewares/auth.middleware';
 import { Router } from "express";
 import { loginUser, logout, registerUser } from "../controllers/user.controller";
 

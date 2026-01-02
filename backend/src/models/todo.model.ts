@@ -4,7 +4,7 @@ export interface ITodo {
     title:string;
     description:string;
     isCompleted?:boolean;
-    userId:mongoose.Schema.Types.ObjectId;
+    userId:string;
 }
 
 

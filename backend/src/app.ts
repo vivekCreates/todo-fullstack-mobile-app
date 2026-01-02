@@ -12,10 +12,10 @@ app.use(cors({
     origin: "*",
 }))
 
-import userRoutes from "./src/routes/user.route";
-import todoRoutes from "./src/routes/todo.route";
+import userRoutes from "./routes/user.route";
+import todoRoutes from "./routes/todo.route";
 
 app.use("/api/users/", userRoutes);
 app.use("/api/todos/", todoRoutes);
 
-export default app;
+export  {app};

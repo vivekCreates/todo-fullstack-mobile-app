@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config();
-import app from "./app";
-
-import { connectToMongoDB } from "./src/db/mongodb";
+dotenv.config({path:".env"});
+import { connectToMongoDB } from "./db/mongodb";
+import { app } from "./app";
 
 
 connectToMongoDB(process.env.MONGO_URL!).then(()=>{
