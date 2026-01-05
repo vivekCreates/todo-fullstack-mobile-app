@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, useRouter } from 'expo-router'
 import { APIURL } from '@/constants/api'
-import { measure } from 'react-native-reanimated'
 
-type UserType = {
+
+type UserRegType = {
     username: string;
     email: string;
     password: string;
@@ -13,14 +13,14 @@ type UserType = {
 
 export default function register() {
 
-    const [user, setUser] = useState<UserType>({
+    const [user, setUser] = useState<UserRegType>({
         username: "",
         email: "",
         password: ""
     })
     const router = useRouter()
 
-    const handleChange = (key: keyof UserType, value: string) => {
+    const handleChange = (key: keyof UserRegType, value: string) => {
         setUser((prev) => ({
             ...prev,
             [key]: value

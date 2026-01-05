@@ -1,16 +1,68 @@
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import { APIURL } from '@/constants/api'
+import { useAuth } from '@/utils/AuthContext'
 
+
+
+type UserLoginType = {
+    email: string;
+    password: string;
+}
 
 export default function login() {
+  const {login} = useAuth()
+
+    const [user, setUser] = useState<UserLoginType>({
+        email: "",
+        password: ""
+    })
+    const router = useRouter()
+
+    const handleChange = (key: keyof UserLoginType, value: string) => {
+        setUser((prev) => ({
+            ...prev,
+            [key]: value
+        }))
+    }
+
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch(`${APIURL}/users/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email:user.email,
+                    password:user.password
+                })
+            })
+            console.log("response: ",response)
+            if(!response.ok){
+                throw new Error("Rregistration failed")
+            }
+
+            const data = await response.json();
+            if(data.success){
+              login(data.token,data.user)
+                router.push("/(protected)/(tabs)");
+            }
+            
+        } catch (error:any) {
+            console.log("Registration error: ",error.message)
+        }
+    }
+
   return (
     <SafeAreaView style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", height: "100%" }}>
       <View style={{ width: "100%", height: "100%", flexDirection: "column", gap: 10, justifyContent: "center", alignItems: "center" }}>
         <Text style={{ color: "white", marginBottom: 10, fontSize: 25, fontWeight: "semibold" }}>Login to TodoMaster</Text>
-        <TextInput style={style.input} placeholder='Enter your email' placeholderTextColor={"grey"} />
-        <TextInput style={style.input} placeholder='Enter your password' placeholderTextColor={"grey"} />
+        <TextInput style={style.input} placeholder='Enter your email' placeholderTextColor={"grey"} value={user.email} onChangeText={(text)=>handleChange("email",text)} />
+        <TextInput style={style.input} placeholder='Enter your password' placeholderTextColor={"grey"}value={user.password} onChangeText={(text)=>handleChange("password",text)} />
         <Pressable style={{
           height: 48,
           width:"80%",
@@ -18,7 +70,9 @@ export default function login() {
           borderRadius: 8,
           alignItems: "center",
           justifyContent: "center",
-        }}>
+        }}
+        onPress={handleSubmit}
+        >
           <Text style={{
             color: "#fff",
             fontSize: 16,
