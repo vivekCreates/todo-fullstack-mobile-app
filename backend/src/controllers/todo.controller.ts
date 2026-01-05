@@ -8,7 +8,7 @@ export async function createTodo(req:Request,res:Response) {
     const {title,description} = req.body
 
     if(!title || !description){
-      return res.status(400).json({message:"Title and Description are required"});
+      return res.status(400).json({success:false,message:"Title and Description are required"});
     }
 
     const newTodo = await Todo.create({
@@ -18,7 +18,8 @@ export async function createTodo(req:Request,res:Response) {
     });
     return  res.status(201).json({
       message:"Todo created successfully",  
-      todo:newTodo
+      todo:newTodo,
+      success:true
     });
   } catch (error:any) {
     console.log("Error creating todo:",error?.message);
@@ -31,13 +32,13 @@ export async function updateTodo(req:Request,res:Response) {
     const {id} = req.params;
 
     if(!title && !description){
-      return res.status(400).json({message:"Title and Description are required"});
+      return res.status(400).json({success:false,message:"Title and Description are required"});
     }
 
     const todo =  await Todo.findById(id);
 
     if(!todo){
-        return res.status(404).json({message:"Todo not found"});
+        return res.status(404).json({success:false,message:"Todo not found"});
     }
 
     const updatedTodo = await Todo.findByIdAndUpdate(id,{
@@ -47,7 +48,8 @@ export async function updateTodo(req:Request,res:Response) {
 
     return  res.status(201).json({
       message:"Todo created successfully",  
-      todo:updatedTodo
+      todo:updatedTodo,
+      success:true
     });
   } catch (error:any) {
     console.log("Error updating todo:",error?.message);
@@ -60,12 +62,13 @@ export async function deleteTodo(req:Request,res:Response) {
     const todo =  await Todo.findById(id);
 
     if(!todo){
-        return res.status(404).json({message:"Todo not found"});
+        return res.status(404).json({success:false,message:"Todo not found"});
     }   
     await Todo.findByIdAndDelete(id);
 
     return  res.status(200).json({
       message:"Todo deleted successfully",  
+      succuss:true
     });
   } catch (error:any) {
     console.log("Error deleting todo:",error?.message);
@@ -77,7 +80,8 @@ export async function getTodos(req:Request,res:Response) {
         const todos = await Todo.find({userId:req.user!.id});
         return res.status(200).json({
             message:"Todos fetched successfully",
-            todos
+            todos,
+            success:true
         });
     } catch (error) {
         console.log("Error fetching todos:",error);

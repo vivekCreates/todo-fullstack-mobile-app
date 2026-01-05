@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import * as SecureStore from 'expo-secure-store';
+import { useAuth } from '@/utils/AuthContext';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -14,9 +15,9 @@ export const unstable_settings = {
 export default function RootLayout() {
     
     const colorScheme = useColorScheme();
-    const isLoggedIn = false
+   const {token} = useAuth()
 
-    if(!isLoggedIn){
+    if(!token){
         return <Redirect href={"/login"}/>
     }
 
