@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Link } from 'expo-router'
 
 
 export default function login() {
@@ -24,6 +25,8 @@ export default function login() {
             fontWeight: "500",
           }}>Login</Text>
         </Pressable>
+
+        <Text style={{color:"white"}}>If you dont have an account please <Link style={{color:"skyblue"}} href={"/register"} replace>register</Link></Text>
       </View>
     </SafeAreaView>
   )
