@@ -1,8 +1,10 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
+import { useTodo } from '@/utils/TodoContext'
 
-export default function TodoItem({title}:{title:string}) {
+export default function TodoItem({id,title}:{id:string,title:string}) {
+  const {deleteTodo} = useTodo();
   return (
     <View style={{
       width:"90%",
@@ -19,22 +21,22 @@ export default function TodoItem({title}:{title:string}) {
       style={{
         width:"70%",
         fontSize:20,
-       
-     
-        
       }}
       value={title}
+      readOnly
       />
       <View style={{flexDirection:"row",gap:4}}>
-        <View
+        <Pressable
         style={{width:30,height:20,cursor:"pointer"}}
+        onPress={()=>deleteTodo(id)}
+        
         >
 
       <Ionicons name={"trash-bin"} size={20} color={"red"}/>
-        </View>
-        <View style={{width:30,height:20,cursor:"pointer"}}>
+        </Pressable>
+        <Pressable style={{width:30,height:20,cursor:"pointer"}}>
       <Ionicons name={"pencil"} size={20} color={"purple"}/>
-        </View>
+        </Pressable>
       </View>
     </View>
   )

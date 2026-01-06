@@ -7,7 +7,7 @@ export default function SearchBar() {
     const {addTodo} = useTodo();
     return (
         <View style={{ width: "100%",   marginBottom: 40, flexDirection: "row", gap: 5,justifyContent:"center",alignItems:"center"}}>
-            <TextInput style={{ width: "70%", fontSize: 15,padding:15 ,borderRadius: 10,backgroundColor: "#212121"}}
+            <TextInput style={{ width: "70%",color:"white", fontSize: 15,padding:15 ,borderRadius: 10,backgroundColor: "#212121"}}
                 placeholder='Enter Todo...'
                 placeholderTextColor={"grey"}
                 value={todo}
@@ -21,7 +21,10 @@ export default function SearchBar() {
                 alignItems: "center",
                 justifyContent: "center",
             }}
-            onPress={()=>addTodo(todo)}
+            onPress={()=>{
+                addTodo(todo)
+                setTodo("")
+            }}
             >
                 <Text style={{color:"white",fontSize:15}}>Add</Text>
             </Pressable>

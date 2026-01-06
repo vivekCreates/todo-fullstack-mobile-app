@@ -131,6 +131,8 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
     const deleteTodo = async(id:string)=>{
+        const todoToDelete = todos.find(todo=>todo._id==id);
+
         setTodos(prev=>(
             prev.filter(todo=>(
                 todo._id != id
@@ -141,12 +143,15 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
                 method:"DELETE",
                 headers:{
                     "Content-Type":"application/json",
-                    Authorization: `Bearer ${token}`
+                    Authorization: `${token}`
                 },
 
             });
 
             if(!response.ok){
+                if(todoToDelete){
+                    setTodos((prev:Todo[])=>([...prev,todoToDelete]))
+                }
                 throw new Error("Failed to delete todo");
             }
 
