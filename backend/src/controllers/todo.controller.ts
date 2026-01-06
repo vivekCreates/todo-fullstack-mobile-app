@@ -74,8 +74,10 @@ export async function deleteTodo(req:Request,res:Response) {
 }
 
 export async function getTodos(req:Request,res:Response) {
-    try {
-        const todos = await Todo.find({userId:req.user!.id});
+  console.log("running get todos controller");  
+  try {
+    const todos = await Todo.find({userId:req.user!.id});
+    console.log("Todos: ",todos); 
         return res.status(200).json({
             message:"Todos fetched successfully",
             todos,

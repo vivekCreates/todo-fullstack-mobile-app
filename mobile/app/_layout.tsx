@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import * as SecureStore from 'expo-secure-store';
 import { AuthProvider } from '@/utils/AuthContext';
+import { TodoProvider } from '@/utils/TodoContext';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -18,6 +19,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <TodoProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(protected)" options={{ headerShown: false }} />
@@ -26,6 +28,7 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
+      </TodoProvider>
     </AuthProvider>
   );
 }

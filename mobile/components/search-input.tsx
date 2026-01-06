@@ -1,8 +1,10 @@
 import { View, Text, TextInput, Pressable } from 'react-native'
 import React, { useState } from 'react'
+import { useTodo } from '@/utils/TodoContext';
 
 export default function SearchBar() {
     const [todo, setTodo] = useState("");
+    const {addTodo} = useTodo();
     return (
         <View style={{ width: "100%",   marginBottom: 40, flexDirection: "row", gap: 5,justifyContent:"center",alignItems:"center"}}>
             <TextInput style={{ width: "70%", fontSize: 15,padding:15 ,borderRadius: 10,backgroundColor: "#212121"}}
@@ -18,7 +20,9 @@ export default function SearchBar() {
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-            }}>
+            }}
+            onPress={()=>addTodo(todo)}
+            >
                 <Text style={{color:"white",fontSize:15}}>Add</Text>
             </Pressable>
         </View>

@@ -2,7 +2,7 @@ import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 
-export default function TodoItem() {
+export default function TodoItem({title}:{title:string}) {
   return (
     <View style={{
       width:"90%",
@@ -23,7 +23,7 @@ export default function TodoItem() {
      
         
       }}
-      value='todo'
+      value={title}
       />
       <View style={{flexDirection:"row",gap:4}}>
         <View

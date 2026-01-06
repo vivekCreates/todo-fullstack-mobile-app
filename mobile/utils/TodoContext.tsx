@@ -27,13 +27,38 @@ const TodoContext = createContext<TodoContextTpye | null>({
 
 
 
-const TodoContextProvider = async ({ children }: { children: React.ReactNode }) => {
+export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     const [todos, setTodos] = useState<Todo[] | []>([]);
     const {token} = useAuth();
 
     useEffect(()=>{
+         if (!token) return;
+
+        const getTodos = async()=>{
+        try {
+            console.log("TOken: ",token)
+            const response = await fetch(`${APIURL}/todos/all`,{
+                method:"GET",
+                headers:{
+                    "Content-Type":"application/json",
+                    Authorization:`${token}`
+                }
+            })
+            console.log("response: ",response)
+            if(!response.ok){
+                throw new Error("Failed to fetching todos ")
+            }
+            const data  = await response.json();
+            console.log("data:",data)
+            if (data.success){
+                setTodos(data.todos)
+            }
+        } catch (error:any) {
+            console.log("Error while fetching todos: ",error?.message);
+        }
+    }
         getTodos();
-    },[])
+    },[token])
 
     const addTodo = async (title: string) => {
         const tempId = Date.now().toString();
@@ -52,7 +77,7 @@ const TodoContextProvider = async ({ children }: { children: React.ReactNode }) 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    Authorization: `${token}`
                 },
                 body: JSON.stringify({ title }),
             });
@@ -84,7 +109,7 @@ const TodoContextProvider = async ({ children }: { children: React.ReactNode }) 
                 method:"PUT",
                 headers:{
                     "Content-Type":"application/json",
-                    Authorization: `Bearer ${token}`
+                    Authorization: `${token}`
                 },
                 body:JSON.stringify({title})
 
@@ -133,20 +158,7 @@ const TodoContextProvider = async ({ children }: { children: React.ReactNode }) 
             console.log("Todo delete: ",error?.message)
         }
     };
-    const getTodos = async()=>{
-        try {
-            const response = await fetch(`${APIURL}/todos`)
-            if(!response.ok){
-                throw new Error("Failed to fetching todos ")
-            }
-            const data  = await response.json();
-            if (data.success){
-                setTodos(data.todos)
-            }
-        } catch (error:any) {
-            console.log("Error while fetching todos: ",error?.message);
-        }
-    }
+    
 
     return (
         <TodoContext.Provider value={{todos,addTodo,updateTodo,deleteTodo}}>

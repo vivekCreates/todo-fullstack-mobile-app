@@ -6,7 +6,7 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.route("/").get(getTodos);
+router.route("/all").get(getTodos);
 router.route("/create").post(createTodo);
 router.route("/update/:id").patch(updateTodo);
 router.route("/delete/:id").delete(deleteTodo);
