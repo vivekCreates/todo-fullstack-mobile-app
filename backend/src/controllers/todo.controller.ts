@@ -5,15 +5,14 @@ import { ITodo, Todo } from "../models/todo.model";
 
 export async function createTodo(req:Request,res:Response) {
   try {
-    const {title,description} = req.body
+    const {title} = req.body
 
-    if(!title || !description){
-      return res.status(400).json({success:false,message:"Title and Description are required"});
+    if(!title){
+      return res.status(400).json({success:false,message:"Title is required"});
     }
 
     const newTodo = await Todo.create({
       title,
-      description,
       userId: req.user?.id
     });
     return  res.status(201).json({
@@ -28,11 +27,11 @@ export async function createTodo(req:Request,res:Response) {
 
 export async function updateTodo(req:Request,res:Response) {
   try {
-    const {title,description} = req.body 
+    const {title} = req.body 
     const {id} = req.params;
 
-    if(!title && !description){
-      return res.status(400).json({success:false,message:"Title and Description are required"});
+    if(!title){
+      return res.status(400).json({success:false,message:"Title is required"});
     }
 
     const todo =  await Todo.findById(id);
@@ -43,7 +42,6 @@ export async function updateTodo(req:Request,res:Response) {
 
     const updatedTodo = await Todo.findByIdAndUpdate(id,{
       title,
-      description
     },{new:true});
 
     return  res.status(201).json({
