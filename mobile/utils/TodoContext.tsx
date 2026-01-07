@@ -14,7 +14,7 @@ interface Todo {
 interface TodoContextTpye {
     todos: Todo[];
     addTodo: (todo: string) => void;
-    updateTodo: (id: string, todo: string) => void;
+    updateTodo: (id: string, todo?: string,isCompleted?:boolean) => void;
     deleteTodo: (id: string) => void;
     todoEditableId:string;
     setTodoEditableId:(id:string)=>void;
@@ -23,10 +23,10 @@ interface TodoContextTpye {
 const TodoContext = createContext<TodoContextTpye | null>({
     todos: [],
     addTodo: (todo: string) => { },
-    updateTodo: (id: string, title: string) => { },
+    updateTodo: (id: string, title?: string,isCompleted?:boolean) => { },
     deleteTodo: (id: string) => { },
     todoEditableId:"",
-    setTodoEditableId:(id:string)=>{}
+    setTodoEditableId:(id:string)=>{},
 });
 
 
@@ -105,12 +105,24 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
             setTodos(prev => prev.filter(todo => todo._id !== tempId));
         }
     };
-    const updateTodo = async(id:string,title:string)=>{
-        setTodos(prev=>(
-            prev.map(todo=>(
-                todo._id == id ? {...todo,title}:todo
+    const updateTodo = async(id:string,title?:string,isCompleted?:boolean)=>{
+
+        console.log("com: ",isCompleted)
+        if(title){
+            setTodos(prev=>(
+                prev.map(todo=>(
+                    todo._id == id ? {...todo,title}:todo
+                ))
             ))
-        ))
+        }
+
+        if(isCompleted){
+            setTodos(prev=>(
+                prev.map(todo=>(
+                    todo._id == id ? {...todo,isCompleted}:todo
+                ))
+            ))
+        }
         try {
             const response = await fetch(`${APIURL}/todos/update/${id}`,{
                 method:"PATCH",
@@ -118,7 +130,7 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
                     "Content-Type":"application/json",
                     Authorization: `${token}`
                 },
-                body:JSON.stringify({title})
+                body:JSON.stringify({title,isCompleted})
 
             });
 

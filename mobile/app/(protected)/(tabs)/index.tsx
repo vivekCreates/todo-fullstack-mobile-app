@@ -19,7 +19,7 @@ export default function todo() {
       data={todos}
       keyExtractor={(todo) => todo._id}
       renderItem={({ item }) => (
-       <TodoItem  id={item._id} todo={todo} title={item.title} setTodo={setTodo}/>
+       <TodoItem isCompleted={item.isCompleted} id={item._id} todo={todo} title={item.title} setTodo={setTodo}/>
       )}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
      />

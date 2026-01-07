@@ -2,10 +2,19 @@ import { View, Text, TextInput, Pressable } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { useTodo } from '@/utils/TodoContext'
+import Checkbox from "expo-checkbox";
 
-export default function TodoItem({ id, title,todo, setTodo }: { id: string,todo:string, title: string, setTodo: (text: string) => void }) {
+export default function TodoItem({ id,isCompleted, title,todo, setTodo }: { id: string,todo:string,isCompleted:boolean, title: string, setTodo: (text: string) => void }) {
   const { deleteTodo, updateTodo, todoEditableId,setTodoEditableId } = useTodo();
+
+
   return (
+    <View style={{flexDirection:"row",alignItems:"center",gap:10}}>
+      <Checkbox
+              value={isCompleted}
+              onValueChange={()=>updateTodo(id,title,!isCompleted)}
+              color={isCompleted ? "#4630EB" : undefined}
+              />
     <View style={{
       width: "90%",
       padding: 10,
@@ -16,11 +25,15 @@ export default function TodoItem({ id, title,todo, setTodo }: { id: string,todo:
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderRadius: 15
+      
+      
     }}>
+           
       <TextInput
         style={{
           width: "70%",
           fontSize: 20,
+          textDecorationLine: isCompleted ? "line-through" : "none",
         }}
         value={title}
 
@@ -54,6 +67,7 @@ export default function TodoItem({ id, title,todo, setTodo }: { id: string,todo:
           }
 
       </View>
+    </View>
     </View>
   
   )
