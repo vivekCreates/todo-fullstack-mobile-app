@@ -16,19 +16,24 @@ interface TodoContextTpye {
     addTodo: (todo: string) => void;
     updateTodo: (id: string, todo: string) => void;
     deleteTodo: (id: string) => void;
+    todoEditableId:string;
+    setTodoEditableId:(id:string)=>void;
 }
 
 const TodoContext = createContext<TodoContextTpye | null>({
     todos: [],
     addTodo: (todo: string) => { },
     updateTodo: (id: string, title: string) => { },
-    deleteTodo: (id: string) => { }
+    deleteTodo: (id: string) => { },
+    todoEditableId:"",
+    setTodoEditableId:(id:string)=>{}
 });
 
 
 
 export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     const [todos, setTodos] = useState<Todo[] | []>([]);
+    const [todoEditableId, setTodoEditableId] = useState("");
     const {token} = useAuth();
 
     useEffect(()=>{
@@ -81,11 +86,13 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
                 },
                 body: JSON.stringify({ title }),
             });
+             console.log("response: ",response)
 
             if (!response.ok) {
                 throw new Error("Failed to add todo");
             }
             const data = await response.json();
+           
             const realTodo = data.todo;
 
             setTodos(prev =>
@@ -106,7 +113,7 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
         ))
         try {
             const response = await fetch(`${APIURL}/todos/update/${id}`,{
-                method:"PUT",
+                method:"PATCH",
                 headers:{
                     "Content-Type":"application/json",
                     Authorization: `${token}`
@@ -166,7 +173,7 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     
 
     return (
-        <TodoContext.Provider value={{todos,addTodo,updateTodo,deleteTodo}}>
+        <TodoContext.Provider value={{todos,setTodoEditableId,todoEditableId ,addTodo,updateTodo,deleteTodo,}}>
             {children}
         </TodoContext.Provider>
     )

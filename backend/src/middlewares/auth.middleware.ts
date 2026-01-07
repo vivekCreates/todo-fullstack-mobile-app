@@ -4,6 +4,9 @@ import { JWT_SECRET } from "../controllers/user.controller";
 import { User } from "../models/user.model";
 
 export interface JWTPayload{
+    userId?:string;
+    iat:number;
+    exp:number;
     id:string;
     email:string;
 }
@@ -24,7 +27,7 @@ console.log("token",token);
         }
         const decoded = jwt.verify(token,JWT_SECRET) as JWTPayload;
     console.log("decoded",decoded);
-        const decodedUser = await User.findById(decoded.id!).select("-password");
+        const decodedUser = await User.findById(decoded.id || decoded?.userId).select("-password");
 
         if(!decodedUser){
             return res.status(401).json({ message: "Unauthorized: User not found" });    

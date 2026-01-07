@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors({
     origin: "*",
+    credentials:true
 }))
 
 import userRoutes from "./routes/user.route";
