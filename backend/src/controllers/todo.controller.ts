@@ -27,7 +27,7 @@ export async function createTodo(req:Request,res:Response) {
 
 export async function updateTodo(req:Request,res:Response) {
   try {
-    const {title} = req.body 
+    const {title,isCompleted} = req.body 
     const {id} = req.params;
 
     if(!title){
@@ -42,6 +42,7 @@ export async function updateTodo(req:Request,res:Response) {
 
     const updatedTodo = await Todo.findByIdAndUpdate(id,{
       title,
+      isCompleted
     },{new:true});
 
     return  res.status(201).json({
