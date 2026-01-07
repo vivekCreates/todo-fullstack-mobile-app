@@ -7,6 +7,8 @@ import { useTodo } from '@/utils/TodoContext'
 export default function account() {
   const {user} = useAuth()
   const {todos} = useTodo()
+  const completedTodos = todos.filter(todo=>todo.isCompleted===true);
+  console.log("Completed: ",completedTodos)
   return (
     <SafeAreaView style={{width:"100%",padding:10}}>
       <View style={{flexDirection:"row",gap:20,alignItems:"center"}}>
@@ -16,6 +18,7 @@ export default function account() {
       <Text style={{color:"white",fontSize:20}}>{user?.username}</Text>
       </View>
       <Text style={{fontSize:20,color:"white",marginTop:30}}>Todos: {todos.length}</Text>
+      <Text style={{fontSize:20,color:"white",marginTop:30}}>Completed: {completedTodos.length}</Text>
     </SafeAreaView>
   )
 }
